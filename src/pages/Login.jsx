@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import illustration from "../assets/illustration.png";
 import google from "../assets/googlr.png";
 import facebook from "../assets/facebook.png";
@@ -6,7 +6,6 @@ import account_circle from "../assets/account_circle.png";
 import visibility from "../assets/visibility.png";
 import mail from "../assets/mail.png";
 import key from "../assets/key.png";
-// import { User, Mail, Lock, Eye } from "lucide-react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -15,6 +14,13 @@ import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
     let navigate = useNavigate();
+
+    useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+            navigate('/home', { replace: true });
+        }
+    }, []);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -53,9 +59,7 @@ const LoginPage = () => {
         password: values.password,
       });
 
-      // Store only the access token in localStorage
-      localStorage.setItem('accessToken', response.data.accessToken); // Store access token
-
+      localStorage.setItem('accessToken', response.data.accessToken); 
       alert("Login successful!");
       console.log(response.data);
 
@@ -77,7 +81,6 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="flex flex-col lg:flex-row min-h-screen">
-        {/* Left Section */}
         <div className="hidden lg:flex flex-1 items-center justify-center bg-gray-100">
           <img
             src={illustration}
@@ -86,13 +89,11 @@ const LoginPage = () => {
           />
         </div>
 
-        {/* Right Section */}
         <div className="flex-1 flex items-center justify-center bg-white px-4 sm:px-8 my-12 mx-4 sm:mx-36 py-10 shadow-xl rounded-xl">
           <div className="w-full h-full">
             <h1 className="text-3xl sm:text-4xl">Welcome to</h1>
             <h1 className="text-3xl sm:text-4xl font-black text-purple-600 mb-8">Unstop</h1>
 
-            {/* Social Login Buttons */}
             <button className="flex gap-3 h-16 sm:h-20 text-base font-medium items-center justify-center w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-600 bg-white hover:bg-gray-50 mb-4">
               <img src={google} alt="Google" />
               Login with Google
@@ -102,14 +103,12 @@ const LoginPage = () => {
               Login with Facebook
             </button>
 
-            {/* Divider */}
             <div className="flex items-center my-6">
               <div className="flex-grow border-t border-gray-300"></div>
               <span className="px-4 text-gray-500 text-sm">OR</span>
               <div className="flex-grow border-t border-gray-300"></div>
             </div>
 
-            {/* Login Form */}
             <Formik
               initialValues={formData}
               validationSchema={validationSchema}
@@ -140,7 +139,6 @@ const LoginPage = () => {
 
                   </div>
 
-                  {/* Email */}
                   <div>
                     <div className="relative">
                       <label htmlFor="email" className="absolute pl-16 pb-2 top-2 flex items-center pointer-events-none text-xs text-gray-700 font-light">
@@ -193,7 +191,6 @@ const LoginPage = () => {
 
                   </div>
 
-                  {/* Remember Me */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <input
@@ -215,7 +212,6 @@ const LoginPage = () => {
                     </a>
                   </div>
 
-                  {/* Submit Button */}
                   <button
                     type="submit"
                     className="w-full bg-purple-600 text-white py-4 px-4 rounded-xl hover:bg-purple-700 transition-colors text-lg font-medium"
@@ -226,7 +222,6 @@ const LoginPage = () => {
               )}
             </Formik>
 
-            {/* Register Link */}
             <p className="text-sm text-center text-gray-600 mt-6">
               Don't have an account?{" "}
               <a href="#" className="text-purple-600 hover:underline">
